@@ -1,38 +1,96 @@
-type Approval @entity(immutable: true) {
-  id: Bytes!
-  owner: Bytes! # address
-  approved: Bytes! # address
-  tokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type NFT @entity {
+  id: ID!
+  tokenID: BigInt!
+  tokenURI: String
+  externalURL: String
+  ipfsURI: String
+  image: String
+  name: String
+  description: String
+  dna: String
+  edition: BigInt
+  date: BigInt
+  background: String
+  weapon: String
+  skin: String
+  cloth: String
+  necklace: String
+  compiler: String
+  owner: User!
+  collection: NFTCollection!
+  listNFTs: [ListNFT!]! @derivedFrom(field: "nft")
+  offerNFTs: [OfferNFT!]! @derivedFrom(field: "nft")
+  auctionNFTs: [AuctionNFT!]! @derivedFrom(field: "nft")
 }
 
-type ApprovalForAll @entity(immutable: true) {
-  id: Bytes!
-  owner: Bytes! # address
-  operator: Bytes! # address
-  approved: Boolean! # bool
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type User @entity {
+  id: ID!
+  tokens: [NFT!]! @derivedFrom(field: "owner")
 }
 
-type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type NFTCollection @entity {
+  id: ID!
+  name: String
+  symbol: String
+  totalsuppy: BigInt
+  mintedTokens: [NFT!]! @derivedFrom(field: "collection")
+  contractURI: String
+  contractURIUpdated: BigInt
+  address: String!
+  creator: String
 }
 
-type Transfer @entity(immutable: true) {
-  id: Bytes!
-  from: Bytes! # address
-  to: Bytes! # address
-  tokenId: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type ListNFT @entity {
+  id: ID!
+  nft: NFT!
+  seller: String!
+  payToken: String
+  price: BigInt
+  sold: Boolean!
 }
+
+type OfferNFT @entity {
+  id: ID!
+  nft: NFT!
+  offerer: String!
+  payToken: String
+  offerPrice: BigInt
+  accepted: Boolean!
+}
+
+type AuctionNFT @entity {
+  id: ID!
+  nft: NFT!
+  creator: String!
+  payToken: String
+  initialPrice: BigInt
+  minBid: BigInt
+  startTime: BigInt
+  endTime: BigInt
+  lastBidder: String
+  heighestBid: BigInt
+  winner: String
+  success: Boolean!
+}
+
+type _Schema_
+  @fulltext(
+    name: "covenSearch"
+    language: en
+    algorithm: rank
+    include: [
+      {
+        entity: "NFT"
+        fields: [
+          { name: "name" }
+          { name: "description" }
+          { name: "background" }
+          { name: "weapon" }
+          { name: "skin" }
+          { name: "cloth" }
+          { name: "necklace" }
+          { name: "compiler" }
+        ]
+      }
+    ]
+  )
