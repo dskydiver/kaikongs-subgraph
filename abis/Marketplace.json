@@ -37,12 +37,6 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "offerPrice",
         "type": "uint256"
@@ -77,12 +71,6 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -123,12 +111,6 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "offerPrice",
         "type": "uint256"
@@ -157,12 +139,6 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -215,12 +191,6 @@
       },
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
@@ -249,12 +219,6 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -305,12 +269,6 @@
         "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "payToken",
-        "type": "address"
       },
       {
         "indexed": false,
@@ -397,14 +355,19 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
+        "internalType": "address[]",
+        "name": "_nfts",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_tokenIds",
+        "type": "uint256[]"
       }
     ],
-    "name": "addPayableToken",
+    "name": "bulkBuy",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -418,21 +381,11 @@
         "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_payToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_price",
-        "type": "uint256"
       }
     ],
     "name": "buy",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -549,25 +502,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_payableToken",
-        "type": "address"
-      }
-    ],
-    "name": "checkIsPayableToken",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "_nft",
         "type": "address"
       },
@@ -593,11 +527,6 @@
         "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_payToken",
-        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -636,11 +565,6 @@
         "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_payToken",
-        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -691,11 +615,6 @@
             "type": "address"
           },
           {
-            "internalType": "address",
-            "name": "payToken",
-            "type": "address"
-          },
-          {
             "internalType": "uint256",
             "name": "price",
             "type": "uint256"
@@ -715,19 +634,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getPayableTokens",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -740,11 +646,6 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "_payToken",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "_offerPrice",
         "type": "uint256"
@@ -752,7 +653,7 @@
     ],
     "name": "makeOffer",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -788,7 +689,7 @@
     ],
     "name": "placeBid",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {

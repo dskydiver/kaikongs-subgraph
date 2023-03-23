@@ -25,26 +25,32 @@ type NFT @entity {
 
 type User @entity {
   id: ID!
-  tokens: [NFT!]! @derivedFrom(field: "owner")
+  nfts: [NFT!]! @derivedFrom(field: "owner")
+  listNFTs: [ListNFT!]! @derivedFrom(field: "seller")
+  auctionNFTs: [AuctionNFT!]! @derivedFrom(field: "creator")
+  wonAuctionNFTs: [AuctionNFT!]! @derivedFrom(field: "winner")
+  nftCollections: [NFTCollection!]! @derivedFrom(field: "creator")
+  royaltyRecievingCollections: [NFTCollection!]!
+    @derivedFrom(field: "royaltyRecipient")
 }
 
 type NFTCollection @entity {
   id: ID!
+  address: String!
   name: String
   symbol: String
-  totalsuppy: BigInt
-  mintedTokens: [NFT!]! @derivedFrom(field: "collection")
-  contractURI: String
-  contractURIUpdated: BigInt
-  address: String!
-  creator: String
+  maxSupply: BigInt
+  baseURI: String
+  mintPrice: BigInt
+  royaltyFee: BigInt
+  royaltyRecipient: User
+  creator: User
 }
 
 type ListNFT @entity {
   id: ID!
   nft: NFT!
-  seller: String!
-  payToken: String
+  seller: User!
   price: BigInt
   sold: Boolean!
 }
@@ -53,7 +59,6 @@ type OfferNFT @entity {
   id: ID!
   nft: NFT!
   offerer: String!
-  payToken: String
   offerPrice: BigInt
   accepted: Boolean!
 }
@@ -61,15 +66,14 @@ type OfferNFT @entity {
 type AuctionNFT @entity {
   id: ID!
   nft: NFT!
-  creator: String!
-  payToken: String
+  creator: User!
   initialPrice: BigInt
   minBid: BigInt
   startTime: BigInt
   endTime: BigInt
   lastBidder: String
   heighestBid: BigInt
-  winner: String
+  winner: User
   success: Boolean!
 }
 
