@@ -28,7 +28,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "mintPrice",
+        "name": "_mintPrice",
         "type": "uint256"
       },
       {
@@ -166,6 +166,19 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_royaltyFee",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdatedRoyaltyFee",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -271,6 +284,35 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "begin",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "end",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "text",
+        "type": "string"
+      }
+    ],
+    "name": "getSlice",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
