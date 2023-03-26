@@ -20,17 +20,18 @@ dataSources:
         - NFT
         - User
         - ListNFT
+        - BuyNFT
         - ActionNFT
         - OfferNFT
       abis:
         - name: Marketplace
           file: ./abis/Marketplace.json
       eventHandlers:
-        - event: ListedNFT(indexed address,indexed uint256,uint256,indexed address)
+        - event: ListedNFT(indexed address,indexed uint256,uint256,uint256,indexed address)
           handler: handleListedNFT
         - event: BoughtNFT(indexed address,indexed uint256,uint256,address,indexed address)
           handler: handleBoughtNFT
-        - event: OfferredNFT(indexed address,indexed uint256,uint256,indexed address)
+        - event: OfferredNFT(indexed address,indexed uint256,uint256,uint256,indexed address)
           handler: handleOfferredNFT
         - event: CanceledOfferredNFT(indexed address,indexed uint256,uint256,indexed address)
           handler: handleOfferredNFT
@@ -64,4 +65,26 @@ dataSources:
       eventHandlers:
         - event: CreatedNFTCollection(indexed address,indexed address)
           handler: handleCreatedNFTCollection
+      file: ./src/mapping.ts
+templates:
+  - kind: ethereum
+    name: Collection
+    network: mainnet
+    source:
+      abi: Collection
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - NFT
+        - NFTCollection
+      abis:
+        - name: Collection
+          file: ./abis/Collection.json
+      eventHandlers:
+        - event: UpdatedRoyaltyFee(uint256)
+          handler: handleUpdatedRoyaltyFee
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
       file: ./src/mapping.ts

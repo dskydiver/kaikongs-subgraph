@@ -42,7 +42,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "mintPrice",
+        "name": "_mintPrice",
         "type": "uint256"
       },
       {

@@ -196,6 +196,12 @@
         "type": "uint256"
       },
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "date",
+        "type": "uint256"
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "seller",
@@ -224,6 +230,12 @@
         "indexed": false,
         "internalType": "uint256",
         "name": "offerPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "date",
         "type": "uint256"
       },
       {
@@ -617,6 +629,11 @@
           {
             "internalType": "uint256",
             "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "date",
             "type": "uint256"
           },
           {

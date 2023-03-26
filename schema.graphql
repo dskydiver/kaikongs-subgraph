@@ -2,31 +2,35 @@ type NFT @entity {
   id: ID!
   tokenID: BigInt!
   tokenURI: String
-  externalURL: String
-  ipfsURI: String
   image: String
   name: String
   description: String
   dna: String
   edition: BigInt
   date: BigInt
-  background: String
-  weapon: String
-  skin: String
-  cloth: String
-  necklace: String
+  attributes: [Attribute!]
   compiler: String
   owner: User!
   collection: NFTCollection!
   listNFTs: [ListNFT!]! @derivedFrom(field: "nft")
+  buyNFTs: [BuyNFT!]! @derivedFrom(field: "nft")
   offerNFTs: [OfferNFT!]! @derivedFrom(field: "nft")
   auctionNFTs: [AuctionNFT!]! @derivedFrom(field: "nft")
 }
 
+type Attribute @entity {
+  id: ID!
+  traitType: String!
+  value: String!
+  nfts: [NFT!] @derivedFrom(field: "attributes")
+}
+
 type User @entity {
   id: ID!
-  nfts: [NFT!]! @derivedFrom(field: "owner")
+  address: String!
+  nfts: [NFT!] @derivedFrom(field: "owner")
   listNFTs: [ListNFT!]! @derivedFrom(field: "seller")
+  buyNFTs: [BuyNFT!]! @derivedFrom(field: "buyer")
   auctionNFTs: [AuctionNFT!]! @derivedFrom(field: "creator")
   wonAuctionNFTs: [AuctionNFT!]! @derivedFrom(field: "winner")
   nftCollections: [NFTCollection!]! @derivedFrom(field: "creator")
@@ -53,6 +57,16 @@ type ListNFT @entity {
   seller: User!
   price: BigInt
   sold: Boolean!
+  date: BigInt!
+  boughtNFT: BuyNFT @derivedFrom(field: "listNFT")
+}
+
+type BuyNFT @entity {
+  id: ID!
+  nft: NFT!
+  buyer: User!
+  date: BigInt!
+  listNFT: ListNFT!
 }
 
 type OfferNFT @entity {
@@ -83,18 +97,10 @@ type _Schema_
     language: en
     algorithm: rank
     include: [
+      { entity: "NFT", fields: [{ name: "name" }, { name: "description" }] }
       {
-        entity: "NFT"
-        fields: [
-          { name: "name" }
-          { name: "description" }
-          { name: "background" }
-          { name: "weapon" }
-          { name: "skin" }
-          { name: "cloth" }
-          { name: "necklace" }
-          { name: "compiler" }
-        ]
+        entity: "Attribute"
+        fields: [{ name: "traitType" }, { name: "value" }]
       }
     ]
   )
