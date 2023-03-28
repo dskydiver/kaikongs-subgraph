@@ -19,6 +19,7 @@ import {
   PlacedBid as PlacedBitEvent,
   ResultedAuction as ResultedAuctionEvent,
   Marketplace,
+  ListedNFT,
 } from "../generated/Marketplace/Marketplace";
 import { CreatedNFTCollection as CreatedNFTCollectionEvent } from "../generated/Factory/Factory";
 import { Collection } from "../generated/Factory/Collection";
@@ -209,7 +210,7 @@ export function handleBoughtNFT(event: BoughtNFTEvent): void {
           event.params.nft.toHexString(),
           event.params.tokenId.toString(),
           event.params.buyer.toHexString(),
-          listNFT.date.toString(),
+          event.block.timestamp.toString(),
         ])
       );
       boughtNFT.nft = nft.id;
@@ -217,6 +218,123 @@ export function handleBoughtNFT(event: BoughtNFTEvent): void {
       boughtNFT.date = event.block.timestamp;
       boughtNFT.listNFT = listNFT.id;
       boughtNFT.save();
+    }
+  }
+}
+
+export function handleOfferredNFT(event: OfferredNFTEvent): void {
+  let marketplace = Marketplace.bind(dataSource.address());
+  let listedNFT = marketplace.try_getListedNFT(
+    event.params.nft,
+    event.params.tokenId
+  );
+
+  let nft = NFT.load(
+    generateId([
+      event.params.nft.toHexString(),
+      event.params.tokenId.toString(),
+    ])
+  );
+
+  let offerer = new User(event.params.offerer.toHexString());
+  offerer.address = event.params.offerer.toHexString();
+  offerer.save();
+
+  if (nft) {
+    if (!listedNFT.reverted) {
+      let listNFT = ListNFT.load(
+        generateId([
+          event.params.nft.toHexString(),
+          event.params.tokenId.toString(),
+          listedNFT.value.seller.toHexString(),
+          listedNFT.value.date.toString(),
+        ])
+      );
+      if (listNFT) {
+        let offerNFT = new OfferNFT(
+          generateId([
+            event.params.nft.toHexString(),
+            event.params.tokenId.toString(),
+            event.params.offerer.toHexString(),
+          ])
+        );
+        offerNFT.nft = nft.id;
+        offerNFT.listNFT = listNFT.id;
+        offerNFT.offerer = event.params.offerer.toHexString();
+        offerNFT.offerPrice = event.params.offerPrice;
+        offerNFT.accepted = false;
+        offerNFT.canceled = false;
+        offerNFT.save();
+      }
+    }
+  }
+}
+
+export function handleCanceledNFT(event: CanceledOfferredNFTEvent): void {
+  let nft = NFT.load(
+    generateId([
+      event.params.nft.toHexString(),
+      event.params.tokenId.toString(),
+    ])
+  );
+
+  let offerer = new User(event.params.offerer.toHexString());
+  offerer.address = event.params.offerer.toHexString();
+  offerer.save();
+
+  if (nft) {
+    let offerNFT = OfferNFT.load(
+      generateId([
+        event.params.nft.toHexString(),
+        event.params.tokenId.toString(),
+        event.params.offerer.toHexString(),
+      ])
+    );
+
+    if (offerNFT) {
+      offerNFT.canceled = true;
+      offerNFT.save();
+    }
+  }
+}
+
+export function handleAcceptedNFT(event: AcceptedNFTEvent): void {
+  let marketplace = Marketplace.bind(dataSource.address());
+  let listedNFT = marketplace.try_getListedNFT(
+    event.params.nft,
+    event.params.tokenId
+  );
+
+  let nft = NFT.load(
+    generateId([
+      event.params.nft.toHexString(),
+      event.params.tokenId.toString(),
+    ])
+  );
+
+  if (nft && !listedNFT.reverted) {
+    let listNFT = ListNFT.load(
+      generateId([
+        event.params.nft.toHexString(),
+        event.params.tokenId.toString(),
+        listedNFT.value.seller.toHexString(),
+        listedNFT.value.date.toString(),
+      ])
+    );
+
+    let offerNFT = OfferNFT.load(
+      generateId([
+        event.params.nft.toHexString(),
+        event.params.tokenId.toString(),
+        event.params.offerer.toHexString(),
+      ])
+    );
+
+    if (listNFT && offerNFT) {
+      listNFT.sold = true;
+      offerNFT.accepted = true;
+      listNFT.save();
+      offerNFT.save();
     }
   }
 }

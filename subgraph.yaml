@@ -9,7 +9,7 @@ dataSources:
     name: Marketplace
     network: mainnet
     source:
-      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      address: "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
       abi: Marketplace
       startBlock: 0
     mapping:
@@ -34,7 +34,7 @@ dataSources:
         - event: OfferredNFT(indexed address,indexed uint256,uint256,uint256,indexed address)
           handler: handleOfferredNFT
         - event: CanceledOfferredNFT(indexed address,indexed uint256,uint256,indexed address)
-          handler: handleOfferredNFT
+          handler: handleCanceledNFT
         - event: AcceptedNFT(indexed address,indexed uint256,uint256,address,indexed address)
           handler: handleAcceptedNFT
         - event: CreatedAuction(indexed address,indexed uint256,uint256,uint256,uint256,uint256,indexed address)

@@ -59,6 +59,7 @@ type ListNFT @entity {
   sold: Boolean!
   date: BigInt!
   boughtNFT: BuyNFT @derivedFrom(field: "listNFT")
+  offerNFT: [OfferNFT!] @derivedFrom(field: "listNFT")
 }
 
 type BuyNFT @entity {
@@ -72,9 +73,11 @@ type BuyNFT @entity {
 type OfferNFT @entity {
   id: ID!
   nft: NFT!
+  listNFT: ListNFT!
   offerer: String!
   offerPrice: BigInt
   accepted: Boolean!
+  canceled: Boolean!
 }
 
 type AuctionNFT @entity {
